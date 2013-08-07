@@ -4,7 +4,7 @@ defmodule ElChat.Mixfile do
   def project do
     [ app: :el_chat,
       version: "0.0.1",
-      elixir: "~> 0.10.2-dev",
+      elixir: "~> 0.10.1",
       deps: deps ]
   end
 
@@ -15,7 +15,9 @@ defmodule ElChat.Mixfile do
   end
 
   defp deps do
-    [ { :cowboy, github: "extend/cowboy" },
-      { :mimetypes, github: "spawngrid/mimetypes" } ]
+    [ { :cowboy,    github: "extend/cowboy" },
+      { :mimetypes, github: "spawngrid/mimetypes" },
+      # TODO, move back to cblage after 0.10 supported.
+      { :json,      github: "mathieul/elixir-json" } ]
   end
 end
