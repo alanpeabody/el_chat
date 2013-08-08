@@ -25,6 +25,7 @@ defmodule ElChat.Handlers.Chat do
 
   def handle_event("join", json, request, state) do
     state = state.name(json["name"]).joined_at(:calendar.universal_time)
+    :gen_server.cast(:room, {:join, self, state.name})
     reply_with(:success, request, state)
   end
 

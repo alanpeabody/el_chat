@@ -17,6 +17,7 @@ defmodule ElChat.Mixfile do
   defp deps do
     [ { :cowboy,    github: "extend/cowboy" },
       { :mimetypes, github: "spawngrid/mimetypes" },
+      { :genx,      github: "yrashk/genx" },
       # TODO, move back to cblage after 0.10 supported.
       { :json,      github: "mathieul/elixir-json" } ]
   end
