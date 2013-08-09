@@ -18,8 +18,23 @@ defmodule ElChat.Handlers.Chat do
   """
   def websocket_handle({:text, message}, request, state) do
     { :ok, json } = JSON.decode(message)
-    handle_ws_event(json["event"], json, request, state)
+    event = binary_to_atom(json["event"], :utf8)
+    websocket_event(event, json, request, state)
   end
+
+  defp websocket_event(:join, json, request, state) do
+    state = state.name(json["name"])
+    state = state.joined_at(:calendar.universal_time)
+    Room.join(self, state.name)
+    {:ok, request, state }
+  end
+
+  defp websocket_event(:message, json, request, state) do
+    state = state.update_sent(&1 + 1)
+    Room.message(json["body"], state.name)
+    {:ok, request, state }
+  end
+
 
   @doc """
   Handles all messages pushed from Elixir. Sends JSON via websocket.
@@ -30,16 +45,5 @@ defmodule ElChat.Handlers.Chat do
 
   def websocket_terminate(_reason, _request, _state), do: :ok
 
-  defp handle_ws_event("join", json, request, state) do
-    state = state.name(json["name"]).joined_at(:calendar.universal_time)
-    Room.join(self, state.name)
-    {:ok, request, state }
-  end
-
-  defp handle_ws_event("message", json, request, state) do
-    state = state.update_sent(&1 + 1)
-    Room.message(json["body"], state.name)
-    {:ok, request, state }
-  end
 
 end
