@@ -31,7 +31,7 @@ defmodule ElChat.Handlers.Chat do
 
   defp websocket_event(:message, json, request, state) do
     state = state.update_sent(&1 + 1)
-    Room.message(json["body"], state.name)
+    Room.message(json["body"], self)
     {:ok, request, state }
   end
 
