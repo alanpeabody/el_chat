@@ -1,5 +1,6 @@
 defmodule ElChat.Room do
   use GenServer.Behaviour
+  import GenX.GenServer
 
   defrecord State, clients: HashDict.new, message_count: 0
 
@@ -11,30 +12,22 @@ defmodule ElChat.Room do
     { :ok, state }
   end
 
-  def handle_cast({ :join, pid, name }, state) do
+  defcast join(client_pid, client_name), state: state, export: :room do
     state = state.update_clients fn(clients) ->
-      Dict.put(clients, pid, name)
+      Dict.put(clients, client_pid, client_name)
     end
     { :noreply, state }
   end
 
-  def handle_cast({ :message, message, name }, state) do
+  defcast message(body, client_name), state: state, export: :room do
     Enum.each state.clients, fn({pid, _}) ->
-      pid <- { :message, message, name}
+      pid <- { :message, body, client_name}
     end
     state = state.update_message_count(fn(val) -> val + 1 end)
     { :noreply, state }
   end
 
-  def send_message(message) do
-    :gen_server.cast(:room, {:message, message})
-  end
-
-  def handle_call(:clients, _from, state) do
+  defcall clients, state: state, export: :room do
     { :reply, state.clients, state }
-  end
-
-  def clients do
-    :gen_server.call(:room, :clients)
   end
 end
