@@ -1,5 +1,6 @@
 defmodule ElChat.Handlers.Chat do
   @behaviour :cowboy_websocket_handler
+  alias ElChat.Room
 
   defrecord State, name: nil, joined_at: nil, sent: 0, recieved: 0
 
@@ -31,13 +32,13 @@ defmodule ElChat.Handlers.Chat do
 
   defp handle_ws_event("join", json, request, state) do
     state = state.name(json["name"]).joined_at(:calendar.universal_time)
-    :gen_server.cast(:room, {:join, self, state.name})
+    Room.join(self, state.name)
     {:ok, request, state }
   end
 
   defp handle_ws_event("message", json, request, state) do
     state = state.update_sent(&1 + 1)
-    :gen_server.cast(:room, {:message, json["body"], state.name})
+    Room.message(json["body"], state.name)
     {:ok, request, state }
   end
 
