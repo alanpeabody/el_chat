@@ -18,9 +18,9 @@ defmodule ElChat.Room do
     { :noreply, state }
   end
 
-  def handle_cast({ :message, message }, state) do
-    Enum.each state.clients, fn({pid, _name}) ->
-      :gen_server.call(pid, {:message, message})
+  def handle_cast({ :message, message, name }, state) do
+    Enum.each state.clients, fn({pid, _}) ->
+      pid <- { :message, message, name}
     end
     state = state.update_message_count(fn(val) -> val + 1 end)
     { :noreply, state }
