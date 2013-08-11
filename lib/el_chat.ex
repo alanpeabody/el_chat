@@ -25,7 +25,7 @@ defmodule ElChat do
   end
 
   defp assets do
-    [ {:directory, {:priv_dir, :el_chat, [<<"static">>]}},
+    [ {:directory, {:priv_dir, :el_chat, ["static"]}},
       {:mimetypes, {Module.function(:mimetypes, :path_to_mimes, 2), :default}} ]
   end
 end

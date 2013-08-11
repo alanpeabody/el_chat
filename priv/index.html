@@ -3,32 +3,8 @@
 <head>
   <title>El Chat</title>
   <link rel='shortcut icon' href='/static/favicon.ico' />
-  <script src='http://code.jquery.com/jquery-1.10.1.min.js'></script>
-  <script type='text/javascript'>
-    $(function() {
-      var host = "ws://localhost:8080/chat";
-      window.socket = new WebSocket(host);
-
-      console.log(socket.readyState);
-
-      socket.onopen = function(){
-        console.log('Socket open');
-        console.log(socket.readyState);
-      };
-
-      socket.onmessage = function(msg){
-        console.log(msg.data);
-      };
-
-      socket.onclose = function(){
-        console.log('Socket closed');
-        console.log(socket.readyState);
-      };
-
-    });
-  </script>
 </head>
 <body>
-
+  <script src='/static/vendor/js/requirejs/require.js' data-main='/static/js/main.js'></script>
 </body>
 </html>

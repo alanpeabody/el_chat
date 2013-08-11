@@ -1,0 +1,17 @@
+{
+  "name": "el_chat",
+  "version": "0.0.0",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~1.10.2",
+    "requirejs": "~2.1.8",
+    "marionette": "~1.0.4",
+    "backbone-amd": "~1.0.0",
+    "underscore-amd": "~1.4.4"
+  }
+}
