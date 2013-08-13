@@ -7,8 +7,6 @@ define(['marionette'], function(Marionette) {
     chatRegion: '#chat'
   });
 
-  App.on('initialize:after', function() {
-    console.log('initialized!');
-  });
+
   return App;
 });

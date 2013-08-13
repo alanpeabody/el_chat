@@ -23,6 +23,11 @@ require.config({
   }
 });
 
-define(['el_chat'], function(ElChat) {
+define(['el_chat', 'el_chat/sockets'], function(ElChat, Socket) {
+  ElChat.addInitializer(Socket.initialize);
+  ElChat.on('initialize:after', function() {
+    console.log('initialized!');
+  });
+  window.ElChat = ElChat;
   ElChat.start();
 });
