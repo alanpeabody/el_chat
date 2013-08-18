@@ -15,7 +15,7 @@ define(['el_chat'], function(ElChat) {
         vent.trigger('socket:received:' + json.event, json);
       };
 
-      socket.oncose = function(){
+      socket.onclose = function(){
         vent.trigger('socket:disconnected');
       };
 

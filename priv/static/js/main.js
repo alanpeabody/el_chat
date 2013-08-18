@@ -23,8 +23,8 @@ require.config({
   }
 });
 
-define(['el_chat', 'el_chat/chat'], function(App, Chat) {
+define(['el_chat', 'el_chat/chat', 'el_chat/login'], function(App, Chat) {
   App.start();
   Backbone.history.start();
-  window.App = App;
+  window.App = App; //For debugging/playing/triggering events in the console.
 });

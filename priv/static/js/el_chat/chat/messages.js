@@ -9,6 +9,9 @@ define(
 
       Module.addInitializer(function() {
         Module.socket = Socket.initialize(Module.vent, '/chat');
+        App.currentUser.on('login', function() {
+          Module.vent.trigger('socket:send', {event: 'join', name: App.currentUser.get('name')});
+        });
       });
 
       var messages = new Collection([], {vent: Module.vent});

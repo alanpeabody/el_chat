@@ -35,6 +35,18 @@
     <div class='body col-md-6'><%= model.get('body') %></div>
   </script>
 
+  <script id='login-template' type='text/html'>
+    <div class='panel-heading'>Login to begin chatting!</div>
+    <div class='panel-body'>
+      <div class='input-group'>
+        <input type='text' class='form-control name'>
+        <span class='input-group-btn'>
+          <button class='btn btn-primary' type='button'>Go!</button>
+        </span>
+      </div>
+    </div>
+  </script>
+
   <script src='/static/vendor/js/requirejs/require.js' data-main='/static/js/main.js'></script>
 </body>
 </html>

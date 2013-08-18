@@ -1,6 +1,6 @@
 // ElChat.Chat Module
 // Wraps submodules for Users, Messages, and Reply.
-// Handles Routing
+// Handles Routing for Chat module.
 define(['marionette','el_chat','./chat/messages'], function(Marionette, App, Messages) {
   return App.module('Chat', function(Module) {
 
