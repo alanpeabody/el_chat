@@ -25,7 +25,6 @@ require.config({
 
 define(['el_chat', 'el_chat/chat'], function(App, Chat) {
   App.start();
-  App.Chat.display();
   Backbone.history.start();
   window.App = App;
 });
