@@ -40,7 +40,13 @@ defmodule ElChat.Handlers.Chat do
   Handles all messages pushed from Elixir. Sends JSON via websocket.
   """
   def websocket_info({:message, message, user}, request, state) do
-    { :reply, {:text, JSON.encode(message: message, user: user)}, request, state }
+    json = JSON.encode(
+      event: :message,
+      body: message,
+      name: user,
+      at: :calendar.universal_time
+    )
+    { :reply, { :text, json }, request, state }
   end
 
   def websocket_terminate(_reason, _request, _state), do: :ok

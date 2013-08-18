@@ -3,8 +3,39 @@
 <head>
   <title>El Chat</title>
   <link rel='shortcut icon' href='/static/favicon.ico' />
+  <link rel='stylesheet' href='//netdna.bootstrapcdn.com/bootstrap/3.0.0-wip/css/bootstrap.min.css'>
 </head>
 <body>
+  <nav class='navbar' role='navigation'>
+    <div class='navbar-header'>
+      <span class='navbar-brand'>El Chat</span>
+    </div>
+    <ul id='nav' class='nav navbar-nav'>
+      <li><a href='#'>Chat</a></li>
+      <li><a href='#'>Processes</a></li>
+    </u>
+    <p id='user-info' class='navbar-content'></p>
+  </nav>
+  <div id='app' class='row'>
+    <div id='main' class='col-md-9 col-md-push-3'>
+    </div>
+    <aside id='sidebar' class='col-md-3 col-md-pull-9'>
+    </aside>
+  </div>
+
+  <!-- TODO: Move to pre-compiled templates -->
+
+  <script id='messages-template' type='text/html'>
+    <div class='panel-heading'>Messages</div>
+    <div id='messages' class='panel-body'></div>
+  </script>
+
+  <script id='message-template' type='text/html'>
+    <% console.log(model) %>
+    <div class='name col-md-3'><%= model.get('name') %></div>
+    <div class='body col-md-6'><%= model.get('body') %></div>
+  </script>
+
   <script src='/static/vendor/js/requirejs/require.js' data-main='/static/js/main.js'></script>
 </body>
 </html>

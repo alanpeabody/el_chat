@@ -23,11 +23,9 @@ require.config({
   }
 });
 
-define(['el_chat', 'el_chat/sockets'], function(ElChat, Socket) {
-  ElChat.addInitializer(Socket.initialize);
-  ElChat.on('initialize:after', function() {
-    console.log('initialized!');
-  });
-  window.ElChat = ElChat;
-  ElChat.start();
+define(['el_chat', 'el_chat/chat'], function(App, Chat) {
+  App.start();
+  App.Chat.display();
+  Backbone.history.start();
+  window.App = App;
 });
