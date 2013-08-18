@@ -13,7 +13,6 @@ define(['el_chat'], function(ElChat) {
       socket.onmessage = function(msg){
         var json = JSON.parse(msg.data);
         vent.trigger('socket:received:' + json.event, json);
-        vent.trigger('socket:received', json);
       };
 
       socket.oncose = function(){
@@ -23,11 +22,6 @@ define(['el_chat'], function(ElChat) {
       vent.on('socket:send', function(data) {
         var json = JSON.stringify(data);
         socket.send(json);
-      });
-
-      // Temp, until ui works:
-      vent.on('socket:received', function(data) {
-        console.log(data);
       });
 
       return socket;
