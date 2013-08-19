@@ -1,30 +1,34 @@
-define(['backbone'], function(BackBone) {
-  return Backbone.Model.extend({
-    idAttribute: 'name',
+define(['backbone'],
+  function(BackBone) {
 
-    isLoggedIn: function() {
-      return this.get('name')
-    },
+    return Backbone.Model.extend({
+      idAttribute: 'name',
 
-    isValidName: function(name) {
-      return name !== null && name !== '';
-    },
+      isLoggedIn: function() {
+        return this.get('name')
+      },
 
-    loginAs: function(name) {
-      if (this.isValidName(name)) {
-        this.set('name', name)
-        localStorage.setItem('name', this.get('name'));
-        this.trigger('login');
+      isValidName: function(name) {
+        return name !== null && name !== '';
+      },
+
+      loginAs: function(name) {
+        if (this.isValidName(name)) {
+          this.set('name', name)
+          localStorage.setItem('name', this.get('name'));
+          this.trigger('login');
+        }
+      },
+
+      loginFromStorage: function(name) {
+        this.loginAs(localStorage.getItem('name'));
+      },
+
+      logout: function() {
+        this.set('name', null);
+        localStorage.removeItem('name');
       }
-    },
+    });
 
-    loginFromStorage: function(name) {
-      this.loginAs(localStorage.getItem('name'));
-    },
-
-    logout: function() {
-      this.set('name', null);
-      localStorage.removeItem('name');
-    }
-  });
-});
+  }
+);

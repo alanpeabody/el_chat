@@ -1,18 +1,27 @@
-// ElChat.Chat Module
-// Wraps submodules for Users, Messages, and Reply.
-// Handles Routing for Chat module.
-define(['marionette','el_chat','./chat/messages'], function(Marionette, App, Messages) {
-  return App.module('Chat', function(Module) {
+// ElChat.Chat Screen
+// Mediates communication for Users, Messages, and Reply modules, as well as
+// the chat socket.
+define(['marionette','el_chat', 'el_chat/sockets'],
+  function(Marionette, App, Socket) {
 
-    var Router = Backbone.Router.extend({
-      routes: { 'chat': 'display' },
-      display: function() { Module.display(); }
+    return App.module('Chat', function(Screen) {
+      Screen.vent = new Backbone.Wreqr.EventAggregator();
+      Screen.socket = Socket.initialize(Screen.vent, '/chat');
+
+      Screen.addInitializer(function() {
+        App.currentUser.on('login', function() {
+          Screen.vent.trigger('socket:send', {
+            event: 'join',
+            name: App.currentUser.get('name')
+          });
+        });
+
+        Screen.vent.on('socket:connected', function() {
+          App.currentUser.loginFromStorage();
+        });
+      });
+
     });
 
-    Module.addInitializer(function() { new Router(); });
-
-    Module.display = function() {
-      App.Chat.Messages.display();
-    };
-  });
-});
+  }
+);

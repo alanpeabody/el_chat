@@ -23,8 +23,15 @@ require.config({
   }
 });
 
-define(['el_chat', 'el_chat/chat', 'el_chat/login'], function(App, Chat) {
-  App.start();
-  Backbone.history.start();
-  window.App = App; //For debugging/playing/triggering events in the console.
-});
+// Load up all routers
+define(['el_chat', 'el_chat/chat/router', 'el_chat/login/router'],
+  function(App, ChatRouter, LoginRouter) {
+    App.start();
+    new ChatRouter();
+    new LoginRouter();
+    Backbone.history.start();
+
+    //For debugging/playing/triggering events in the console.
+    window.App = App;
+  }
+);
