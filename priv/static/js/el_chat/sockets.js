@@ -20,7 +20,6 @@ define({
 
     vent.on('socket:send', function(data) {
       var json = JSON.stringify(data);
-      console.log('socket:send', socket.readyState);
       socket.send(json);
     });
 
