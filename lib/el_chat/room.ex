@@ -69,8 +69,12 @@ defmodule ElChat.Room do
   end
 
   defp broadcast(clients, message) do
-    Enum.each clients, fn({pid, _}) ->
-      pid <- message
+    # Spawn a process to do the broadcasting, leaving room to respond to next
+    # message. More efficient with many users.
+    spawn fn ->
+      Enum.each clients, fn({pid, _}) ->
+        pid <- message
+      end
     end
   end
 end

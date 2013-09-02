@@ -11,6 +11,6 @@ define(['marionette'], function(Marionette) {
     itemView: MessageView,
     itemViewContainer: '#messages',
     template: '#messages-template',
-    className: 'messages panel'
+    className: 'messages panel panel-default'
   });
 });

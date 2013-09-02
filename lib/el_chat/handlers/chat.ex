@@ -41,6 +41,10 @@ defmodule ElChat.Handlers.Chat do
     {:ok, request, state }
   end
 
+  defp websocket_receive(:users, _json, request, state) do
+    {:reply, { :text, websocket_reply({:users, Room.clients}) }, request, state }
+  end
+
 
   @doc """
   Handles all messages pushed from Elixir. Sends JSON via websocket.
@@ -83,6 +87,17 @@ defmodule ElChat.Handlers.Chat do
       event: :left,
       pid: pid_to_json(pid),
       at: :calendar.universal_time
+    )
+  end
+
+  defp websocket_reply({:users, users}) do
+    users = Enum.map users, fn({pid, nick}) ->
+      [ pid: pid_to_json(pid), nick: nick ]
+    end
+
+    JSON.encode(
+      event: :users,
+      users: users
     )
   end
 

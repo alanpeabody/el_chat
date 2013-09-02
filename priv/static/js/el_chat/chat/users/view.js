@@ -11,6 +11,6 @@ define(['marionette'], function(Marionette) {
     itemView: UserView,
     itemViewContainer: '#users',
     template: '#users-template',
-    className: 'users panel'
+    className: 'users panel panel-default'
   });
 });
