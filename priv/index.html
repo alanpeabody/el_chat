@@ -3,7 +3,7 @@
 <head>
   <title>El Chat</title>
   <link rel='shortcut icon' href='/static/favicon.ico' />
-  <link rel='stylesheet' href='//netdna.bootstrapcdn.com/bootstrap/3.0.0-wip/css/bootstrap.min.css'>
+  <link rel='stylesheet' href='//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css'>
 </head>
 <body>
   <nav class='navbar' role='navigation'>
@@ -33,7 +33,7 @@
   </script>
 
   <script id='message-template' type='text/html'>
-    <div class='name col-md-3'><%= model.get('name') %></div>
+    <div class='name col-md-3'><%= model.get('nick') %></div>
     <div class='body col-md-6'><%= model.get('body') %></div>
   </script>
 
@@ -50,12 +50,20 @@
   </script>
 
   <script id='reply-template' type='text/html'>
-    <div class='panel-body'>
-      <div class='input-group'>
-        <input type='text' class='form-control body'>
-        <span class='input-group-btn'>
-          <button class='btn btn-primary' type='button'>Send</button>
-        </span>
+    <div class='panel-body row'>
+      <div class='col-md-3'>
+        <div class='input-group'>
+          <span class='input-group-addon'>@</span>
+          <input type='text' class='form-control nick' placeholder='Your Nick'>
+        </div>
+      </div>
+      <div class='col-md-9'>
+        <div class='input-group'>
+          <input type='text' class='form-control body'>
+          <span class='input-group-btn'>
+            <button class='btn btn-primary' type='button'>Send</button>
+          </span>
+        </div>
       </div>
     </div>
   </script>

@@ -2,28 +2,48 @@ defmodule ElChat.RoomTest do
   use ExUnit.Case
   alias ElChat.Room
 
-  test "Joining adds user" do
-    test_pid = self
-    Room.join(test_pid, "alan")
+  setup do: Room.join(self)
+  teardown do: Room.leave(self)
+
+  test "Joining adds Anonymous user" do
+    test_pid = spawn fn ->
+      Room.join(self)
+    end
+    assert_receive {:joined, ^test_pid, "Anonymous"}
     assert Dict.has_key?(Room.clients, test_pid)
-    assert "alan" == Room.clients[test_pid]
   end
 
-  test "no name, no chat" do
-    Room.reset_clients
-    Room.join(self, "")
-    assert HashDict.new == Room.clients
+  test "Leaving room" do
+    test_pid = spawn fn ->
+      Room.join(self)
+      Room.leave(self)
+    end
+    assert_receive {:left, ^test_pid}
+    assert !Dict.has_key?(Room.clients, test_pid)
+  end
+
+  test "Updating Nick" do
+    test_pid = spawn fn ->
+      Room.join(self)
+      Room.nick_updated(self, "Sirius")
+      Room.leave(self)
+    end
+    assert_receive {:nick_updated, ^test_pid, "Sirius"}
   end
 
   test "Sending message to server" do
-    Room.join(self, "alan")
-    Room.message("testing", self)
-    assert_receive {:message, _, "alan"}
+    test_pid = spawn fn ->
+      Room.join(self)
+      Room.message(self, "Testing")
+      Room.leave(self)
+    end
+    assert_receive {:message, ^test_pid, "Anonymous", "Testing"}
   end
 
-  test "not joined, not sent" do
-    Room.reset_clients
-    Room.message("testing", self)
-    refute_receive {:message, _, _}
+  test "Sending message to server without joining" do
+    test_pid = spawn fn ->
+      Room.message(self, "Testing")
+    end
+    refute_receive {:message, ^test_pid, "Anonymous", "Testing"}
   end
 end

@@ -2,6 +2,10 @@ defmodule ElChat.Room do
   use GenServer.Behaviour
   import GenX.GenServer
 
+  @moduledoc """
+  The ElChat room manager/dispatcher. All actions are managed by this process.
+  """
+
   defrecord State, clients: HashDict.new, message_count: 0
 
   def start_link do
@@ -12,23 +16,50 @@ defmodule ElChat.Room do
     { :ok, state }
   end
 
-  defcast join(client_pid, ""), state: state, export: :room do
-    { :noreply, state }
-  end
-
-  defcast join(client_pid, client_name), state: state, export: :room do
+  @doc """
+  Adds client pid to state, broadcast join event
+  Exported as Room.join(pid)
+  """
+  defcast join(client_pid), state: state, export: :room do
     state = state.update_clients fn(clients) ->
-      Dict.put(clients, client_pid, client_name)
+      Dict.put(clients, client_pid, "Anonymous")
     end
+    broadcast state.clients, { :joined, client_pid, "Anonymous" }
     { :noreply, state }
   end
 
-  defcast message(body, from), state: state, export: :room do
-    if sender = state.clients[from] do
-      Enum.each state.clients, fn({pid, _}) ->
-        pid <- { :message, body, sender}
-      end
-      state = state.update_message_count(fn(val) -> val + 1 end)
+  @doc """
+  Removes client pid, broadcast leave event"
+  Exported as Room.leave(pid)
+  """
+  defcast leave(client_pid), state: state, export: :room do
+    state = state.update_clients fn(clients) ->
+      Dict.delete(clients, client_pid)
+    end
+    broadcast state.clients, { :left, client_pid }
+    { :noreply, state }
+  end
+
+  @doc """
+  Update nick for given pid, broadcast nick change
+  Exported as Room.nick_updated(pid, "new nick")
+  """
+  defcast nick_updated(client_pid, nick), state: state, export: :room do
+    state = state.update_clients fn(clients) ->
+      Dict.put(clients, client_pid, nick)
+    end
+    broadcast state.clients, { :nick_updated, client_pid, nick }
+    { :noreply, state }
+  end
+
+  @doc """
+  Broadcast chat message to all clients
+  Exported as Room.message(pid, "message body")
+  """
+  defcast message(client_pid, body), state: state, export: :room do
+    if client_name = state.clients[client_pid] do
+      broadcast state.clients, { :message, client_pid, client_name, body }
+      state = state.update_message_count(&1 + 1)
     end
     { :noreply, state }
   end
@@ -37,8 +68,9 @@ defmodule ElChat.Room do
     { :reply, state.clients, state }
   end
 
-  defcast reset_clients, state: state, export: :room do
-    state = state.clients(HashDict.new)
-    { :noreply, state }
+  defp broadcast(clients, message) do
+    Enum.each clients, fn({pid, _}) ->
+      pid <- message
+    end
   end
 end

@@ -2,14 +2,14 @@ defmodule ElChat.Handlers.ChatTest do
   use ExUnit.Case
   alias ElChat.Handlers.Chat
 
-  test "handle join" do
+  test "handle nick updated" do
     state = Chat.State.new
-    json_join = JSON.encode(event: "join", name: "alan")
+    json = JSON.encode(event: "nick_updated", nick: "Sirius")
 
     assert { :ok, [], new_state } =
-      Chat.websocket_handle({:text, json_join}, [], state)
+      Chat.websocket_handle({:text, json}, [], state)
 
-    assert "alan" == new_state.name
+    assert "Sirius" == new_state.name
   end
 
   test "handle message" do

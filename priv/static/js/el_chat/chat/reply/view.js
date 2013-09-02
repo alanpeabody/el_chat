@@ -11,7 +11,8 @@ define(['marionette', 'el_chat/chat'],
 
       events: {
         'click button': 'postMessage',
-        'keyup .body': 'postOnEnter'
+        'keyup .body': 'postOnEnter',
+        'keyup .nick': 'liveNick'
       },
 
       postMessage: function() {
@@ -24,7 +25,12 @@ define(['marionette', 'el_chat/chat'],
         if (e.keyCode == 13) {
           this.postMessage();
         }
-      }
+      },
+
+      liveNick: function() {
+        var nick = this.$('.nick').val();
+        Screen.vent.trigger('socket:send', {event: 'nick_updated', nick: nick});
+      },
     });
   }
 );
