@@ -33,20 +33,8 @@
   </script>
 
   <script id='message-template' type='text/html'>
-    <div class='name col-md-3'><%= model.get('nick') %></div>
+    <div class='nick col-md-3'><%= model.get('nick') %></div>
     <div class='body col-md-6'><%= model.get('body') %></div>
-  </script>
-
-  <script id='login-template' type='text/html'>
-    <div class='panel-heading'>Login to begin chatting!</div>
-    <div class='panel-body'>
-      <div class='input-group'>
-        <input type='text' class='form-control name'>
-        <span class='input-group-btn'>
-          <button class='btn btn-primary' type='button'>Go!</button>
-        </span>
-      </div>
-    </div>
   </script>
 
   <script id='reply-template' type='text/html'>
@@ -66,6 +54,15 @@
         </div>
       </div>
     </div>
+  </script>
+
+  <script id='users-template' type='text/html'>
+    <div class='panel-heading'>Users</div>
+    <ul id='users' class='list-group'></ul>
+  </script>
+
+  <script id='user-template' type='text/html'>
+    <span class='nick'><%= model.get('nick') %></span>
   </script>
 
   <script src='/static/vendor/js/requirejs/require.js' data-main='/static/js/main.js'></script>
