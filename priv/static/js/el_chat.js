@@ -1,13 +1,14 @@
-define(['marionette', 'el_chat/user'],
-  function(Marionette, User) {
+define(['marionette', 'el_chat/nav'],
+  function(Marionette, Navigation) {
 
     var App = new Backbone.Marionette.Application();
-    App.currentUser = new User();
     App.addRegions({
-      sidebar: '#sidebar',
-      main:    '#main',
-      bottom:  '#bottom'
+      navigation: '#nav',
+      sidebar:    '#sidebar',
+      main:       '#main',
+      bottom:     '#bottom'
     });
+    App.navigation.show(new Navigation);
     return App;
 
   }

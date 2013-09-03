@@ -6,26 +6,28 @@
   <link rel='stylesheet' href='//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css'>
 </head>
 <body>
-  <nav class='navbar' role='navigation'>
+  <div class='container'>
+    <nav id='nav' class='navbar navbar-default' role='navigation'></nav>
+    <div id='app' class='row'>
+      <div class='col-md-9 col-md-push-3'>
+        <div id='main'></div>
+        <div id='bottom'></div>
+      </div>
+      <aside id='sidebar' class='col-md-3 col-md-pull-9'>
+      </aside>
+    </div>
+  </div>
+
+  <script id='nav-template' type='text/html'>
     <div class='navbar-header'>
       <span class='navbar-brand'>El Chat</span>
     </div>
-    <ul id='nav' class='nav navbar-nav'>
-      <li><a href='#'>Chat</a></li>
-      <li><a href='#'>Processes</a></li>
-    </u>
-    <p id='user-info' class='navbar-content'></p>
-  </nav>
-  <div id='app' class='row'>
-    <div class='col-md-9 col-md-push-3'>
-      <div id='main'></div>
-      <div id='bottom'></div>
-    </div>
-    <aside id='sidebar' class='col-md-3 col-md-pull-9'>
-    </aside>
-  </div>
+    <ul id='nav-items' class='nav navbar-nav'></ul>
+  </script>
 
-  <!-- TODO: Move to pre-compiled templates -->
+  <script id='nav-item-template' type='text/html'>
+    <a href='#<%= model.get('path') %>'><%= model.get('name') %></a>
+  </script>
 
   <script id='messages-template' type='text/html'>
     <div class='panel-heading'>Messages</div>
