@@ -2,12 +2,16 @@ define(['marionette', 'backbone'],
   function(Marionette, Backbone) {
 
     var NavItem = Backbone.Model.extend({
+      initialize: function() {
+        var pathRegEx = new RegExp('#'+this.get('path'));
+        this.set('active', pathRegEx.test(window.location.hash));
+      },
       navigate: function() {
-        this.collection.invoke('set', 'active', false);
         Backbone.history.navigate(
           this.get('path'),
-          {activate: !this.get('active')}
+          {trigger: !this.get('active')}
         );
+        this.collection.invoke('set', 'active', false);
         this.set('active', true);
       }
     });

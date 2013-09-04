@@ -22,7 +22,7 @@ define(['marionette', 'el_chat/chat'],
       },
 
       postOnEnter: function(e) {
-        if (e.keyCode == 13) {
+        if (e.keyCode === 13) {
           this.postMessage();
         }
       },
