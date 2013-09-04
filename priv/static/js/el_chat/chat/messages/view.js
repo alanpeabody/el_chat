@@ -1,16 +1,20 @@
-define(['marionette'], function(Marionette) {
-  var MessageView = Marionette.ItemView.extend({
-    template: '#message-template',
-    className: 'message row',
-    serializeData: function() {
-      return {model: this.model};
-    }
-  });
+define(['marionette', 'el_chat/live_composite_view'],
+  function(Marionette, LiveCompositeView) {
 
-  return Marionette.CompositeView.extend({
-    itemView: MessageView,
-    itemViewContainer: '#messages',
-    template: '#messages-template',
-    className: 'messages panel panel-default'
-  });
-});
+    var MessageView = Marionette.ItemView.extend({
+      template: '#message-template',
+      className: 'message row',
+      serializeData: function() {
+        return {model: this.model};
+      }
+    });
+
+    return LiveCompositeView.extend({
+      itemView: MessageView,
+      itemViewContainer: '#messages',
+      template: '#messages-template',
+      className: 'messages panel panel-default'
+    });
+
+  }
+);
